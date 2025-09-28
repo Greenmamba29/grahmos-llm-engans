@@ -1,0 +1,4 @@
+[submodule "llm-answer-engine"]
+	path = llm-answer-engine
+	url = https://github.com/developersdigest/llm-answer-engine.git
+	branch = main
