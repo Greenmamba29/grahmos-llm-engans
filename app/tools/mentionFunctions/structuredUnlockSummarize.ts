@@ -5,8 +5,19 @@ import OpenAI from "openai";
 import { zodResponseFormat } from "openai/helpers/zod";
 import { z } from "zod";
 
-// 2. Initialize OpenAI client
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+// 2. Initialize OpenAI client lazily
+let openai: OpenAI | null = null;
+
+function getOpenAI() {
+    if (!openai) {
+        const apiKey = process.env.OPENAI_API_KEY;
+        if (!apiKey) {
+            throw new Error('OPENAI_API_KEY environment variable is not set');
+        }
+        openai = new OpenAI({ apiKey });
+    }
+    return openai;
+}
 
 // Define Zod schema for URL extraction
 const UrlExtraction = z.object({
@@ -18,7 +29,8 @@ export async function brightDataWebScraper(mentionTool: string, userMessage: str
     let targetUrl: string;
     try { 
         // 4. Extract URL from user message using parsed output feature
-        const urlCompletion = await openai.beta.chat.completions.parse({
+        const openaiClient = getOpenAI();
+        const urlCompletion = await openaiClient.beta.chat.completions.parse({
             model: "gpt-4o-2024-08-06",
             messages: [
                 { role: "system", content: "Extract the most likely valid URL from a natural language query." },
@@ -63,7 +75,7 @@ export async function brightDataWebScraper(mentionTool: string, userMessage: str
         let contentForLLM = responseData.content;
 
         // 8. Summarize content using OpenAI
-        const summaryStream = await openai.chat.completions.create({
+        const summaryStream = await openaiClient.chat.completions.create({
             model: "gpt-4-turbo-preview",
             stream: true,
             messages: [

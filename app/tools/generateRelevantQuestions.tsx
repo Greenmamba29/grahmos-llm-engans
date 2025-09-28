@@ -2,17 +2,23 @@
 import { config } from '../config';
 import { OpenAI } from 'openai';
 
-let openai: OpenAI;
-if (config.useOllamaInference) {
-    openai = new OpenAI({
-        baseURL: 'http://localhost:11434/v1',
-        apiKey: 'ollama'
-    });
-} else {
-    openai = new OpenAI({
-        baseURL: config.nonOllamaBaseURL,
-        apiKey: config.inferenceAPIKey
-    });
+let openai: OpenAI | null = null;
+
+function getOpenAI() {
+    if (!openai) {
+        if (config.useOllamaInference) {
+            openai = new OpenAI({
+                baseURL: 'http://localhost:11434/v1',
+                apiKey: 'ollama'
+            });
+        } else {
+            openai = new OpenAI({
+                baseURL: config.nonOllamaBaseURL,
+                apiKey: config.inferenceAPIKey
+            });
+        }
+    }
+    return openai;
 }
 
 interface SearchResult {
@@ -22,7 +28,7 @@ interface SearchResult {
 }
 
 export const relevantQuestions = async (sources: SearchResult[], userMessage: String): Promise<any> => {
-    return await openai.chat.completions.create({
+    return await getOpenAI().chat.completions.create({
         messages: [
             {
                 role: "system",

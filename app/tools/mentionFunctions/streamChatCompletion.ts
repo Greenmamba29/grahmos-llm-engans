@@ -1,21 +1,27 @@
 import { OpenAI } from 'openai';
 import { config } from '../../config';
 
-let openai: OpenAI;
-if (config.useOllamaInference) {
-    openai = new OpenAI({
-        baseURL: 'http://localhost:11434/v1',
-        apiKey: 'ollama'
-    });
-} else {
-    openai = new OpenAI({
-        baseURL: config.nonOllamaBaseURL,
-        apiKey: config.inferenceAPIKey
-    });
+let openai: OpenAI | null = null;
+
+function getOpenAI() {
+    if (!openai) {
+        if (config.useOllamaInference) {
+            openai = new OpenAI({
+                baseURL: 'http://localhost:11434/v1',
+                apiKey: 'ollama'
+            });
+        } else {
+            openai = new OpenAI({
+                baseURL: config.nonOllamaBaseURL,
+                apiKey: config.inferenceAPIKey
+            });
+        }
+    }
+    return openai;
 }
 
 export async function streamChatCompletion(mentionTool: string, userMessage: string, streamable: any): Promise<void> {
-    const chatCompletion = await openai.chat.completions.create({
+    const chatCompletion = await getOpenAI().chat.completions.create({
         messages: [
             {
                 role: "system",

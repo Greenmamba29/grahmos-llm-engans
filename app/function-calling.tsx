@@ -3,10 +3,17 @@ import { OpenAI } from 'openai';
 import { config } from './config';
 import { SpotifyApi } from "@spotify/web-api-ts-sdk";
 
-const client = new OpenAI({
-    baseURL: config.nonOllamaBaseURL,
-    apiKey: config.inferenceAPIKey
-});
+let client: OpenAI | null = null;
+
+function getClient() {
+    if (!client) {
+        client = new OpenAI({
+            baseURL: config.nonOllamaBaseURL,
+            apiKey: config.inferenceAPIKey
+        });
+    }
+    return client;
+}
 const MODEL = config.inferenceModel;
 
 const api = SpotifyApi.withClientCredentials(
@@ -165,7 +172,7 @@ export async function functionCalling(query: string) {
                 },
             },
         ];
-        const response = await client.chat.completions.create({
+        const response = await getClient().chat.completions.create({
             model: MODEL,
             messages: messages,
             tools: tools,

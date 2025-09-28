@@ -6,16 +6,22 @@ import { MemoryVectorStore } from 'langchain/vectorstores/memory';
 import { Document as DocumentInterface } from 'langchain/document';
 import { OpenAIEmbeddings } from '@langchain/openai';
 import { OllamaEmbeddings } from "@langchain/community/embeddings/ollama";
-let embeddings: OllamaEmbeddings | OpenAIEmbeddings;
-if (config.useOllamaEmbeddings) {
-    embeddings = new OllamaEmbeddings({
-        model: config.embeddingsModel,
-        baseUrl: "http://localhost:11434"
-    });
-} else {
-    embeddings = new OpenAIEmbeddings({
-        modelName: config.embeddingsModel
-    });
+let embeddings: OllamaEmbeddings | OpenAIEmbeddings | null = null;
+
+function getEmbeddings() {
+    if (!embeddings) {
+        if (config.useOllamaEmbeddings) {
+            embeddings = new OllamaEmbeddings({
+                model: config.embeddingsModel,
+                baseUrl: "http://localhost:11434"
+            });
+        } else {
+            embeddings = new OpenAIEmbeddings({
+                modelName: config.embeddingsModel
+            });
+        }
+    }
+    return embeddings;
 }
 
 interface SearchResult {
@@ -91,7 +97,7 @@ export async function processAndVectorizeContent(
             if (content.html.length > 0) {
                 try {
                     const splitText = await new RecursiveCharacterTextSplitter({ chunkSize: textChunkSize, chunkOverlap: textChunkOverlap }).splitText(content.html);
-                    const vectorStore = await MemoryVectorStore.fromTexts(splitText, { title: content.title, link: content.link }, embeddings);
+                    const vectorStore = await MemoryVectorStore.fromTexts(splitText, { title: content.title, link: content.link }, getEmbeddings());
                     const contentResults = await vectorStore.similaritySearch(query, numberOfSimilarityResults);
                     allResults.push(...contentResults);
                 } catch (error) {
