@@ -1,0 +1,26 @@
+{
+  "name": "grahmos-webflow-automation",
+  "version": "1.0.0",
+  "description": "Webflow automation tools for GrahmOS Directory branding and site management",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/update-home-page.js",
+    "apply-branding": "node scripts/apply-phase2-branding.js",
+    "create-sites": "node scripts/create-50-sites.js",
+    "test-api": "node scripts/test-api-connection.js",
+    "quick-update": "node scripts/quick-update.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "dotenv": "^16.3.1"
+  },
+  "keywords": [
+    "webflow",
+    "automation",
+    "grahmos",
+    "branding"
+  ],
+  "author": "",
+  "license": "MIT"
+}

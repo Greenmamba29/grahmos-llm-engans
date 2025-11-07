@@ -1,0 +1,23 @@
+{
+  "apiToken": "4ad349b8f15c0f11be17a513aa46fe834c7697c2c7ccbe6bbf117e0dbf3c8d48",
+  "siteId": "690c15ada42ec08cfbdf7127",
+  "baseUrl": "https://api.webflow.com/v2",
+  "branding": {
+    "primaryColor": "#2563EB",
+    "secondaryColor": "#1F2937",
+    "successColor": "#10B981",
+    "warningColor": "#F59E0B",
+    "errorColor": "#EF4444",
+    "fontFamily": {
+      "heading": "Inter, sans-serif",
+      "body": "Inter, sans-serif"
+    },
+    "fontSizes": {
+      "h1": "3rem",
+      "h2": "2.25rem",
+      "h3": "1.875rem",
+      "h4": "1.5rem",
+      "body": "1rem"
+    }
+  }
+}

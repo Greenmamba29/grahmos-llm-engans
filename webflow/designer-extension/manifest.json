@@ -1,0 +1,21 @@
+{
+  "name": "GrahmOS Branding Automator",
+  "id": "grahmos-branding-automator",
+  "version": "1.0.0",
+  "description": "Automate GrahmOS branding across your Webflow site with one click",
+  "author": "GrahmOS",
+  "icon": "icon.png",
+  "permissions": [
+    "read:pages",
+    "write:pages",
+    "read:styles",
+    "write:styles",
+    "read:components",
+    "write:components"
+  ],
+  "entrypoint": "index.html",
+  "ui": {
+    "width": 400,
+    "height": 600
+  }
+}

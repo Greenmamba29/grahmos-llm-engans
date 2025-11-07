@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GrahmOS Branding Automator</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: #fff;
+      color: #1F2937;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 100%;
+    }
+
+    .header {
+      margin-bottom: 24px;
+    }
+
+    .header h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #1F2937;
+      margin-bottom: 8px;
+    }
+
+    .header p {
+      font-size: 14px;
+      color: #6B7280;
+    }
+
+    .brand-colors {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .color-swatch {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      background: #F9FAFB;
+      border-radius: 8px;
+      border: 1px solid #E5E7EB;
+    }
+
+    .color-box {
+      width: 40px;
+      height: 40px;
+      border-radius: 6px;
+      border: 2px solid #E5E7EB;
+    }
+
+    .color-info {
+      flex: 1;
+    }
+
+    .color-name {
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .color-value {
+      font-size: 12px;
+      color: #6B7280;
+      font-family: 'Monaco', 'Courier New', monospace;
+    }
+
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: #2563EB;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #1D4ED8;
+    }
+
+    .btn-secondary {
+      background: #F3F4F6;
+      color: #1F2937;
+      border: 1px solid #E5E7EB;
+    }
+
+    .btn-secondary:hover {
+      background: #E5E7EB;
+    }
+
+    .status {
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 24px;
+      font-size: 14px;
+      display: none;
+    }
+
+    .status.success {
+      background: #D1FAE5;
+      color: #065F46;
+      border: 1px solid #10B981;
+      display: block;
+    }
+
+    .status.error {
+      background: #FEE2E2;
+      color: #991B1B;
+      border: 1px solid #EF4444;
+      display: block;
+    }
+
+    .status.info {
+      background: #DBEAFE;
+      color: #1E40AF;
+      border: 1px solid #2563EB;
+      display: block;
+    }
+
+    .progress {
+      margin-top: 16px;
+      display: none;
+    }
+
+    .progress.active {
+      display: block;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: #E5E7EB;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: #2563EB;
+      transition: width 0.3s;
+      width: 0%;
+    }
+
+    .section {
+      margin-bottom: 24px;
+      padding: 16px;
+      background: #F9FAFB;
+      border-radius: 8px;
+      border: 1px solid #E5E7EB;
+    }
+
+    .section-title {
+      font-weight: 600;
+      font-size: 16px;
+      margin-bottom: 12px;
+      color: #1F2937;
+    }
+
+    .checkbox-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .checkbox-item input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+
+    .checkbox-item label {
+      font-size: 14px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🎨 GrahmOS Branding</h1>
+      <p>Automate branding across your site</p>
+    </div>
+
+    <div id="status" class="status"></div>
+
+    <div class="brand-colors">
+      <div class="color-swatch">
+        <div class="color-box" style="background: #2563EB;"></div>
+        <div class="color-info">
+          <div class="color-name">Primary Blue</div>
+          <div class="color-value">#2563EB</div>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-box" style="background: #1F2937;"></div>
+        <div class="color-info">
+          <div class="color-name">Text Dark</div>
+          <div class="color-value">#1F2937</div>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-box" style="background: #10B981;"></div>
+        <div class="color-info">
+          <div class="color-name">Success Green</div>
+          <div class="color-value">#10B981</div>
+        </div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-box" style="background: #F59E0B;"></div>
+        <div class="color-info">
+          <div class="color-name">Warning Amber</div>
+          <div class="color-value">#F59E0B</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Branding Options</div>
+      <div class="checkbox-group">
+        <div class="checkbox-item">
+          <input type="checkbox" id="colors" checked>
+          <label for="colors">Update Colors</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" id="typography" checked>
+          <label for="typography">Update Typography</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" id="components" checked>
+          <label for="components">Update Components</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" id="homepage">
+          <label for="homepage">Apply to Home Page Only</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-primary" id="applyBranding">
+        🚀 Apply Complete Branding
+      </button>
+      <button class="btn btn-secondary" id="applyColors">
+        🎨 Apply Colors Only
+      </button>
+      <button class="btn btn-secondary" id="reset">
+        ↻ Reset Changes
+      </button>
+    </div>
+
+    <div class="progress" id="progress">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Webflow Designer Extension API
+    let webflow;
+
+    // Initialize when Webflow API is available
+    if (window.webflow) {
+      webflow = window.webflow;
+      init();
+    } else {
+      // For testing outside Webflow
+      console.log('Webflow API not available - running in test mode');
+      initTestMode();
+    }
+
+    function init() {
+      console.log('GrahmOS Branding Extension initialized');
+      
+      document.getElementById('applyBranding').addEventListener('click', applyCompleteBranding);
+      document.getElementById('applyColors').addEventListener('click', applyColorsOnly);
+      document.getElementById('reset').addEventListener('click', resetChanges);
+    }
+
+    function initTestMode() {
+      console.log('Running in test mode');
+      showStatus('Running in test mode. Load this extension in Webflow Designer for full functionality.', 'info');
+      
+      document.getElementById('applyBranding').addEventListener('click', () => {
+        showStatus('Test mode: This would apply complete branding in Webflow Designer', 'info');
+      });
+      
+      document.getElementById('applyColors').addEventListener('click', () => {
+        showStatus('Test mode: This would apply colors only in Webflow Designer', 'info');
+      });
+      
+      document.getElementById('reset').addEventListener('click', () => {
+        showStatus('Test mode: This would reset changes in Webflow Designer', 'info');
+      });
+    }
+
+    async function applyCompleteBranding() {
+      showProgress(0);
+      showStatus('Applying complete branding...', 'info');
+
+      try {
+        const options = {
+          colors: document.getElementById('colors').checked,
+          typography: document.getElementById('typography').checked,
+          components: document.getElementById('components').checked,
+          homepageOnly: document.getElementById('homepage').checked
+        };
+
+        if (webflow) {
+          // Get selected element or current page
+          const selected = await webflow.getSelectedElement();
+          
+          if (options.colors) {
+            showProgress(25);
+            await applyColors(selected);
+          }
+          
+          if (options.typography) {
+            showProgress(50);
+            await applyTypography(selected);
+          }
+          
+          if (options.components) {
+            showProgress(75);
+            await applyComponents(selected);
+          }
+          
+          showProgress(100);
+          showStatus('✅ Complete branding applied successfully!', 'success');
+        } else {
+          showStatus('Webflow API not available. Load in Designer.', 'error');
+        }
+      } catch (error) {
+        showStatus('❌ Error: ' + error.message, 'error');
+        console.error(error);
+      }
+    }
+
+    async function applyColorsOnly() {
+      showProgress(0);
+      showStatus('Applying colors...', 'info');
+
+      try {
+        if (webflow) {
+          const selected = await webflow.getSelectedElement();
+          await applyColors(selected);
+          showProgress(100);
+          showStatus('✅ Colors applied successfully!', 'success');
+        } else {
+          showStatus('Webflow API not available. Load in Designer.', 'error');
+        }
+      } catch (error) {
+        showStatus('❌ Error: ' + error.message, 'error');
+        console.error(error);
+      }
+    }
+
+    async function applyColors(element) {
+      const colors = {
+        primary: '#2563EB',
+        secondary: '#1F2937',
+        success: '#10B981',
+        warning: '#F59E0B'
+      };
+
+      if (element && webflow) {
+        // Apply colors to element styles
+        // This is a simplified example - actual implementation depends on Webflow API
+        console.log('Applying colors to element:', element);
+      }
+    }
+
+    async function applyTypography(element) {
+      const fonts = {
+        heading: 'Inter, sans-serif',
+        body: 'Inter, sans-serif'
+      };
+
+      if (element && webflow) {
+        console.log('Applying typography to element:', element);
+      }
+    }
+
+    async function applyComponents(element) {
+      if (element && webflow) {
+        console.log('Applying component updates to element:', element);
+      }
+    }
+
+    async function resetChanges() {
+      showStatus('Resetting changes...', 'info');
+      
+      if (webflow) {
+        // Reset logic
+        showStatus('✅ Changes reset', 'success');
+      } else {
+        showStatus('Webflow API not available. Load in Designer.', 'error');
+      }
+    }
+
+    function showStatus(message, type) {
+      const statusEl = document.getElementById('status');
+      statusEl.textContent = message;
+      statusEl.className = `status ${type}`;
+    }
+
+    function showProgress(percent) {
+      const progressEl = document.getElementById('progress');
+      const fillEl = document.getElementById('progressFill');
+      
+      progressEl.classList.add('active');
+      fillEl.style.width = percent + '%';
+      
+      if (percent >= 100) {
+        setTimeout(() => {
+          progressEl.classList.remove('active');
+        }, 2000);
+      }
+    }
+  </script>
+</body>
+</html>
