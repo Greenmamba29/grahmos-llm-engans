@@ -1,0 +1,100 @@
+# Webflow + GrahmOS Development Rules
+
+## Project Context
+- **Site:** GRAHMOS Directory Platform
+- **Site ID:** 687f11a214d051312f70590e
+- **API Base:** https://api.webflow.com/v2
+- **Token:** Use WEBFLOW_API_TOKEN env var
+
+## Collections
+- Stadiums: 68ac5238f3c7da9c3a054048
+- Routes: 68ac5528a1178733012eeccb
+- Providers: 68ac5fddf20aaebae7e2addd
+
+## Pages
+- Home: 687f11a214d051312f705914
+- Search: 68ab4cb4e6f4d590011e1188
+- Style Guide: 687f11a214d051312f70591c
+- Stadiums Template: 68ac5238f3c7da9c3a054078
+- Routes Template: 68ac5528a1178733012eecdd
+- Providers Template: 68ac5fddf20aaebae7e2ade9
+
+## GrahmOS Branding
+**Colors:**
+- Primary: #2563EB (blue-600)
+- Dark: #1E40AF (blue-800)
+- Text: #1F2937 (gray-800)
+- Success: #10B981 (emerald-500)
+- Warning: #F59E0B (amber-500)
+- Error: #EF4444 (red-500)
+
+**Typography:**
+- Font: Inter (weights: 400, 500, 600, 700)
+- Display: 48px
+- H1: 36px
+- H2: 28px
+- Body: 16px
+
+## Code Guidelines
+1. Always use the automate.js CLI wrapper for Webflow API calls
+2. Store backups in ~/webflow-cli/grahmos-directory/backups/
+3. Use environment variables for secrets (never hardcode API tokens)
+4. Follow Webflow API v2.0.0 conventions
+5. Rate limit: 500ms between API calls
+
+## Available Scripts
+- `node automate.js list-all <collection>` - List collection items
+- `node automate.js export <collection> <output.json>` - Export data
+- `node automate.js import <collection> <input.json>` - Import data
+- `node automate.js schema <collection>` - Get collection schema
+- `node automate.js bulk-update <collection> <update.json>` - Bulk updates
+
+## File Structure
+```
+~/webflow-cli/
+├── automate.js              # Main CLI tool
+├── .env                     # API credentials
+├── cursor-webflow-config.json  # Cursor config
+└── grahmos-directory/
+    ├── backups/            # All backups (10 files)
+    ├── templates/          # Category templates
+    ├── data/              # Source data
+    ├── results/           # Execution logs
+    └── scripts/           # Automation scripts
+```
+
+## When Making Changes
+1. ALWAYS backup before modifications
+2. Test in draft mode first
+3. Verify changes before publishing
+4. Log all actions to results/ directory
+5. Update Notion tracker after each phase
+
+## Restore Process
+- Collections: `node automate.js import <collection> <backup.json>`
+- Pages: Use Webflow API `/pages/{id}/dom` endpoint
+- All backups verified and ready (80KB total)
+
+## Webflow MCP Configuration
+```json
+{
+  "webflow": {
+    "api_token": "${WEBFLOW_API_TOKEN}",
+    "base_url": "https://api.webflow.com/v2",
+    "site_id": "687f11a214d051312f70590e",
+    "collections": {
+      "stadiums": "68ac5238f3c7da9c3a054048",
+      "routes": "68ac5528a1178733012eeccb",
+      "providers": "68ac5fddf20aaebae7e2addd"
+    },
+    "pages": {
+      "home": "687f11a214d051312f705914",
+      "search": "68ab4cb4e6f4d590011e1188",
+      "style_guide": "687f11a214d051312f70591c",
+      "stadiums_template": "68ac5238f3c7da9c3a054078",
+      "routes_template": "68ac5528a1178733012eecdd",
+      "providers_template": "68ac5fddf20aaebae7e2ade9"
+    }
+  }
+}
+```
