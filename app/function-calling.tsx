@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { OpenAI } from 'openai';
-import { config } from './config';
+import { config } from '@/app/config';
 import { SpotifyApi } from "@spotify/web-api-ts-sdk";
 
 const client = new OpenAI({

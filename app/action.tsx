@@ -11,6 +11,7 @@ import { streamingChatCompletion } from '@/app/tools/streamingChatCompletion';
 import { checkRateLimit } from '@/app/tools/rateLimiting';
 import { lookupTool } from '@/app/tools/mentionTools';
 import type { AIState, UIState } from '@/lib/types';
+import { STATUS } from '@/lib/constants';
 
 async function myAction(userMessage: string, mentionTool: string | null, logo: string | null, file: string): Promise<any> {
   "use server";
@@ -61,7 +62,7 @@ async function myAction(userMessage: string, mentionTool: string | null, logo: s
       semanticCacheKey: userMessage
     });
 
-    streamable.done({ status: 'done' });
+    streamable.done({ status: STATUS.DONE });
   })();
 
   return streamable.value;

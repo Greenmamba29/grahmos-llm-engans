@@ -39,6 +39,16 @@ import type {
   FollowUp, 
   Shopping 
 } from '@/lib/types';
+import { 
+  STATUS, 
+  FUNCTION_CALL_TYPES, 
+  MESSAGE_TYPES, 
+  DEFAULT_QUERIES, 
+  FILE_UPLOAD_ACCEPT, 
+  MENTION_TOOLS, 
+  NODE_TYPES, 
+  KEYBOARD_KEYS 
+} from '@/lib/constants';
 // 2. Set up types - now imported from centralized types file
 
 const mentionTools = mentionToolConfig.useMentionQueries ? mentionToolConfig.mentionTools : [];
@@ -68,10 +78,10 @@ export default function Page() {
   // 8. For the form submission, we need to set up a handler that will be called when the user submits the form
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === '/') {
+      if (e.key === KEYBOARD_KEYS.FORWARD_SLASH) {
         if (
           e.target &&
-          ['INPUT', 'TEXTAREA'].includes((e.target as HTMLElement).nodeName)
+          [NODE_TYPES.INPUT, NODE_TYPES.TEXTAREA].includes((e.target as HTMLElement).nodeName)
         ) {
           return;
         }
@@ -116,7 +126,7 @@ export default function Page() {
     const newMessageId = Date.now();
     const newMessage = {
       id: newMessageId,
-      type: 'userMessage',
+      type: MESSAGE_TYPES.USER_MESSAGE,
       userMessage: payload.message,
       mentionTool: payload.mentionTool,
       file: payload.file,
@@ -151,7 +161,7 @@ export default function Page() {
           if (messageIndex !== -1) {
             const currentMessage = messagesCopy[messageIndex];
 
-            currentMessage.status = typedMessage.status === 'rateLimitReached' ? 'rateLimitReached' : currentMessage.status;
+            currentMessage.status = typedMessage.status === STATUS.RATE_LIMIT_REACHED ? STATUS.RATE_LIMIT_REACHED : currentMessage.status;
 
             if (typedMessage.isolatedView) {
               currentMessage.isolatedView = true;
@@ -173,9 +183,9 @@ export default function Page() {
 
             if (typedMessage.conditionalFunctionCallUI) {
               const functionCall = typedMessage.conditionalFunctionCallUI;
-              if (functionCall.type === 'places') currentMessage.places = functionCall.places;
-              if (functionCall.type === 'shopping') currentMessage.shopping = functionCall.shopping;
-              if (functionCall.type === 'ticker') currentMessage.ticker = functionCall.data;
+              if (functionCall.type === FUNCTION_CALL_TYPES.PLACES) currentMessage.places = functionCall.places;
+              if (functionCall.type === FUNCTION_CALL_TYPES.SHOPPING) currentMessage.shopping = functionCall.shopping;
+              if (functionCall.type === FUNCTION_CALL_TYPES.TICKER) currentMessage.ticker = functionCall.data;
               if (functionCall.trackId) currentMessage.spotify = functionCall.trackId;
             }
 
@@ -193,9 +203,9 @@ export default function Page() {
 
               if (data.conditionalFunctionCallUI) {
                 const functionCall = data.conditionalFunctionCallUI;
-                if (functionCall.type === 'places') currentMessage.places = functionCall.places;
-                if (functionCall.type === 'shopping') currentMessage.shopping = functionCall.shopping;
-                if (functionCall.type === 'ticker') currentMessage.ticker = functionCall.data;
+                if (functionCall.type === FUNCTION_CALL_TYPES.PLACES) currentMessage.places = functionCall.places;
+                if (functionCall.type === FUNCTION_CALL_TYPES.SHOPPING) currentMessage.shopping = functionCall.shopping;
+                if (functionCall.type === FUNCTION_CALL_TYPES.TICKER) currentMessage.ticker = functionCall.data;
                 if (functionCall.trackId) currentMessage.spotify = functionCall.trackId;
               }
             }
@@ -232,7 +242,7 @@ export default function Page() {
           {messages.map((message, index) => (
             <div key={`message-${index}`}>
               {message.isolatedView ? (
-                selectedMentionTool === 'fal-ai/stable-diffusion-v3-medium'
+                selectedMentionTool === MENTION_TOOLS.FAL_AI_STABLE_DIFFUSION
                   || message.falBase64Image
                   ? (
                     <ImageGenerationComponent key={`image-${index}`} src={message.falBase64Image} query={message.userMessage} />
@@ -251,8 +261,8 @@ export default function Page() {
                 // Render regular view
                 <div className="flex flex-col md:flex-row max-w-[1200px] mx-auto">
                   <div className="w-full md:w-3/4 md:pr-2">
-                    {message.status && message.status === 'rateLimitReached' && <RateLimit />}
-                    {message.type === 'userMessage' && <UserMessageComponent message={message.userMessage} />}
+              {message.status && message.status === STATUS.RATE_LIMIT_REACHED && <RateLimit />}
+              {message.type === MESSAGE_TYPES.USER_MESSAGE && <UserMessageComponent message={message.userMessage} />}
                     {message.ticker && message.ticker.length > 0 && (
                       <FinancialChart key={`financialChart-${index}`} ticker={message.ticker} />
                     )}
@@ -291,7 +301,7 @@ export default function Page() {
       <div className={`px-2 fixed inset-x-0 bottom-0 w-full bg-gradient-to-b duration-300 ease-in-out animate-in dark:from-gray-900/10 dark:from-10% peer-[[data-state=open]]:group-[]:lg:pl-[250px] peer-[[data-state=open]]:group-[]:xl:pl-[300px]] mb-4 bring-to-front`}>
         <div className="mx-auto max-w-xl sm:px-4 ">
           {messages.length === 0 && !inputValue && (
-            <InitialQueries questions={['When did Daft Punk release Da Funk?', 'How is Apple\'s stock doing these days?', 'Where can I get the best bagel in NYC?', 'I want to buy a mens patagonia vest']} handleFollowUpClick={handleFollowUpClick} />
+            <InitialQueries questions={DEFAULT_QUERIES as unknown as string[]} handleFollowUpClick={handleFollowUpClick} />
           )}
           {mentionQuery && (
             <div className="">
@@ -369,7 +379,7 @@ export default function Page() {
                   <input
                     id="fileInput"
                     type="file"
-                    accept=".doc,.docx,.pdf, .txt, .js, .tsx"
+                    accept={FILE_UPLOAD_ACCEPT}
                     style={{ display: 'none' }}
                     onChange={(e) => {
                       const file = e.target.files?.[0];
