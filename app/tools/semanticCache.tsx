@@ -1,6 +1,6 @@
 import { SemanticCache } from "@upstash/semantic-cache";
 import { Index } from "@upstash/vector";
-import { config } from './../config';
+import { config } from '@/app/config';
 
 export let semanticCache: SemanticCache | undefined;
 

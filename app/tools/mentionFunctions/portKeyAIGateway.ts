@@ -1,5 +1,5 @@
 import Portkey from 'portkey-ai';
-import { config } from '../../config';
+import { config } from '@/app/config';
 
 export async function portKeyAIGateway(mentionTool: string, userMessage: string, streamable: any): Promise<void> {
     if (config.usePortkey) {

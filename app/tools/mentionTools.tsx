@@ -1,10 +1,10 @@
-import { mentionToolConfig } from './mentionToolConfig';
+import { mentionToolConfig } from '@/app/tools/mentionToolConfig';
 // @mentionFunctions 
-import { streamChatCompletion } from './mentionFunctions/streamChatCompletion';
-import { portKeyAIGateway } from './mentionFunctions/portKeyAIGateway';
-import { portKeyAIGatewayTogetherAI } from './mentionFunctions/portKeyAIGatewayTogetherAI';
-import { falAiStableDiffusion3Medium } from './mentionFunctions/falAiStableDiffusion3Medium';
-import { brightDataWebScraper } from './mentionFunctions/structuredUnlockSummarize';
+import { streamChatCompletion } from '@/app/tools/mentionFunctions/streamChatCompletion';
+import { portKeyAIGateway } from '@/app/tools/mentionFunctions/portKeyAIGateway';
+import { portKeyAIGatewayTogetherAI } from '@/app/tools/mentionFunctions/portKeyAIGatewayTogetherAI';
+import { falAiStableDiffusion3Medium } from '@/app/tools/mentionFunctions/falAiStableDiffusion3Medium';
+import { brightDataWebScraper } from '@/app/tools/mentionFunctions/structuredUnlockSummarize';
 
 type MentionFunctions = {
     [key: string]: (mentionTool: string, userMessage: string, streamable: any) => Promise<void>;

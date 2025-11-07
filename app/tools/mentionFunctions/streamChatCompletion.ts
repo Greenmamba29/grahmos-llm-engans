@@ -1,5 +1,5 @@
 import { OpenAI } from 'openai';
-import { config } from '../../config';
+import { config } from '@/app/config';
 
 let openai: OpenAI;
 if (config.useOllamaInference) {

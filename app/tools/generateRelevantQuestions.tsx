@@ -1,5 +1,5 @@
 
-import { config } from '../config';
+import { config } from '@/app/config';
 import { OpenAI } from 'openai';
 
 let openai: OpenAI;

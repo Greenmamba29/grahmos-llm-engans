@@ -1,5 +1,5 @@
 
-import { config } from '../config';
+import { config } from '@/app/config';
 import cheerio from 'cheerio';
 import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter';
 import { MemoryVectorStore } from 'langchain/vectorstores/memory';

@@ -1,19 +1,13 @@
 // 1. Import the 'useState' and 'useEffect' hooks from React
 import { useState, useEffect } from 'react';
+import type { SearchResult } from '@/lib/types';
 
-// 2. Define the 'SearchResult' interface with properties for 'favicon', 'link', and 'title'
-export interface SearchResult {
-    favicon: string;
-    link: string;
-    title: string;
-}
-
-// 3. Define the 'SearchResultsComponentProps' interface with a 'searchResults' property of type 'SearchResult[]'
+// 2. Define the 'SearchResultsComponentProps' interface with a 'searchResults' property of type 'SearchResult[]'
 export interface SearchResultsComponentProps {
     searchResults: SearchResult[];
 }
 
-// 4. Define the 'SearchResultsComponent' functional component that takes 'searchResults' as a prop
+// 3. Define the 'SearchResultsComponent' functional component that takes 'searchResults' as a prop
 const SearchResultsComponent = ({ searchResults }: { searchResults: SearchResult[] }) => {
     // 5. Use the 'useState' hook to manage the 'isExpanded' and 'loadedFavicons' state
     const [isExpanded, setIsExpanded] = useState(false);

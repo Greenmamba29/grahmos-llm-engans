@@ -1,6 +1,6 @@
 "use server";
-import { SearchResult } from '@/components/answer/SearchResultsComponent';
-import { config } from '../config';
+import type { SearchResult } from '@/lib/types';
+import { config } from '@/app/config';
 
 export async function getSearchResults(userMessage: string): Promise<any> {
     switch (config.searchProvider) {

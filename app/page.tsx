@@ -28,95 +28,18 @@ import ImageGenerationComponent from '@/components/answer/ImageGenerationCompone
 import { ArrowUp, Paperclip } from '@phosphor-icons/react';
 // OPTIONAL: Use Upstash rate limiting to limit the number of requests per user
 import RateLimit from '@/components/answer/RateLimit';
-import { mentionToolConfig } from './tools/mentionToolConfig';
-// 2. Set up types
-interface SearchResult {
-  favicon: string;
-  link: string;
-  title: string;
-}
-interface Message {
-  falBase64Image: any;
-  logo: string | undefined;
-  semanticCacheKey: any;
-  cachedData: string;
-  id: number;
-  type: string;
-  content: string;
-  userMessage: string;
-  images: Image[];
-  videos: Video[];
-  followUp: FollowUp | null;
-  isStreaming: boolean;
-  searchResults?: SearchResult[];
-  conditionalFunctionCallUI?: any;
-  status?: string;
-  places?: Place[];
-  shopping?: Shopping[];
-  ticker?: string | undefined;
-  spotify?: string | undefined;
-  isolatedView: boolean;
-
-}
-interface StreamMessage {
-  isolatedView: any;
-  searchResults?: any;
-  userMessage?: string;
-  llmResponse?: string;
-  llmResponseEnd?: boolean;
-  images?: any;
-  videos?: any;
-  followUp?: any;
-  conditionalFunctionCallUI?: any;
-  status?: string;
-  places?: Place[];
-  shopping?: Shopping[];
-  ticker?: string;
-  spotify?: string;
-  cachedData?: string;
-  semanticCacheKey?: any;
-  falBase64Image?: any;
-}
-interface Image {
-  link: string;
-}
-interface Video {
-  link: string;
-  imageUrl: string;
-}
-interface Place {
-  cid: React.Key | null | undefined;
-  latitude: number;
-  longitude: number;
-  title: string;
-  address: string;
-  rating: number;
-  category: string;
-  phoneNumber?: string;
-  website?: string;
-}
-interface FollowUp {
-  choices: {
-    message: {
-      content: string;
-    };
-  }[];
-}
-interface Shopping {
-  type: string;
-  title: string;
-  source: string;
-  link: string;
-  price: string;
-  shopping: any;
-  position: number;
-  delivery: string;
-  imageUrl: string;
-  rating: number;
-  ratingCount: number;
-  offers: string;
-  productId: string;
-}
+import { mentionToolConfig } from '@/app/tools/mentionToolConfig';
+import type { 
+  SearchResult, 
+  Message, 
+  StreamMessage, 
+  Image, 
+  Video, 
+  Place, 
+  FollowUp, 
+  Shopping 
+} from '@/lib/types';
+// 2. Set up types - now imported from centralized types file
 
 const mentionTools = mentionToolConfig.useMentionQueries ? mentionToolConfig.mentionTools : [];
 

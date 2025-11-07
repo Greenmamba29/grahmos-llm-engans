@@ -2,7 +2,7 @@
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 import { headers } from 'next/headers';
-import { config } from '../config';
+import { config } from '@/app/config';
 
 let ratelimit: Ratelimit | undefined;
 

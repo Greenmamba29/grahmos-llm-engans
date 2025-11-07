@@ -1,15 +1,16 @@
 "use server";
 
 import { createAI, createStreamableValue } from 'ai/rsc';
-import { config } from './config';
-import { functionCalling } from './function-calling';
-import { getSearchResults, getImages, getVideos } from './tools/searchProviders';
-import { get10BlueLinksContents, processAndVectorizeContent } from './tools/contentProcessing';
-import { setInSemanticCache, clearSemanticCache, initializeSemanticCache, getFromSemanticCache } from './tools/semanticCache';
-import { relevantQuestions } from './tools/generateRelevantQuestions';
-import { streamingChatCompletion } from './tools/streamingChatCompletion';
-import { checkRateLimit } from './tools/rateLimiting';
-import { lookupTool } from './tools/mentionTools';
+import { config } from '@/app/config';
+import { functionCalling } from '@/app/function-calling';
+import { getSearchResults, getImages, getVideos } from '@/app/tools/searchProviders';
+import { get10BlueLinksContents, processAndVectorizeContent } from '@/app/tools/contentProcessing';
+import { setInSemanticCache, clearSemanticCache, initializeSemanticCache, getFromSemanticCache } from '@/app/tools/semanticCache';
+import { relevantQuestions } from '@/app/tools/generateRelevantQuestions';
+import { streamingChatCompletion } from '@/app/tools/streamingChatCompletion';
+import { checkRateLimit } from '@/app/tools/rateLimiting';
+import { lookupTool } from '@/app/tools/mentionTools';
+import type { AIState, UIState } from '@/lib/types';
 
 async function myAction(userMessage: string, mentionTool: string | null, logo: string | null, file: string): Promise<any> {
   "use server";
@@ -66,17 +67,9 @@ async function myAction(userMessage: string, mentionTool: string | null, logo: s
   return streamable.value;
 }
 
-const initialAIState: {
-  role: 'user' | 'assistant' | 'system' | 'function';
-  content: string;
-  id?: string;
-  name?: string;
-}[] = [];
+const initialAIState: AIState[] = [];
 
-const initialUIState: {
-  id: number;
-  display: React.ReactNode;
-}[] = [];
+const initialUIState: UIState[] = [];
 
 export const AI = createAI({
   actions: {
