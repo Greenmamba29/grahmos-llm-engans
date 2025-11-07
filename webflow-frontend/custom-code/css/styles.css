@@ -1,0 +1,281 @@
+/**
+ * Grahmos Webflow Custom Styles
+ * Add this to Webflow Project Settings → Custom Code → Head Code (wrapped in <style> tags)
+ * or add to an embed element on your page
+ */
+
+/* Loading Indicator */
+[data-grahmos="loading-indicator"] {
+  display: none;
+  text-align: center;
+  padding: 2rem;
+}
+
+.loading-animation {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Error Message */
+[data-grahmos="error-message"] {
+  display: none;
+  padding: 1rem;
+  background-color: #fee;
+  border: 1px solid #fcc;
+  border-radius: 4px;
+  color: #c33;
+  margin: 1rem 0;
+}
+
+/* Results Container */
+[data-grahmos="results-container"] {
+  margin-top: 2rem;
+}
+
+/* Sources Section */
+[data-grahmos="sources-section"] {
+  margin-bottom: 2rem;
+}
+
+.sources-title,
+.images-title,
+.videos-title,
+.followup-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.sources-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.source-card {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  background: #f9f9f9;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #333;
+  transition: all 0.2s;
+  border: 1px solid #e0e0e0;
+}
+
+.source-card:hover {
+  background: #f0f0f0;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.source-favicon {
+  width: 20px;
+  height: 20px;
+  margin-right: 0.5rem;
+  flex-shrink: 0;
+}
+
+.source-title {
+  font-weight: 500;
+  font-size: 0.9rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+/* LLM Response */
+[data-grahmos="llm-response"] {
+  display: none;
+  padding: 1.5rem;
+  background: #fff;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+  font-size: 1rem;
+  color: #333;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+/* Images Section */
+.images-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.result-image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.result-image:hover {
+  transform: scale(1.05);
+}
+
+/* Videos Section */
+.videos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.video-card {
+  display: block;
+  text-decoration: none;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #f9f9f9;
+  transition: transform 0.2s;
+}
+
+.video-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+
+.video-thumbnail {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+}
+
+.video-title {
+  padding: 0.75rem;
+  font-size: 0.9rem;
+  color: #333;
+  font-weight: 500;
+}
+
+/* Follow-up Questions */
+.followup-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.followup-button {
+  padding: 0.75rem 1.25rem;
+  background: #fff;
+  border: 2px solid #3498db;
+  border-radius: 24px;
+  color: #3498db;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.followup-button:hover {
+  background: #3498db;
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+/* Search Input Styles */
+[data-grahmos="search-input"] {
+  width: 100%;
+  padding: 1rem 1.5rem;
+  font-size: 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 24px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+[data-grahmos="search-input"]:focus {
+  border-color: #3498db;
+}
+
+[data-grahmos="search-submit"] {
+  padding: 1rem 2rem;
+  background: #3498db;
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+[data-grahmos="search-submit"]:hover {
+  background: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sources-grid,
+  .images-grid,
+  .videos-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  [data-grahmos="llm-response"] {
+    padding: 1rem;
+    font-size: 0.95rem;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .sources-title,
+  .images-title,
+  .videos-title,
+  .followup-title,
+  .source-title,
+  .video-title {
+    color: #f0f0f0;
+  }
+  
+  .source-card,
+  .video-card {
+    background: #2a2a2a;
+    border-color: #444;
+    color: #f0f0f0;
+  }
+  
+  .source-card:hover {
+    background: #333;
+  }
+  
+  [data-grahmos="llm-response"] {
+    background: #2a2a2a;
+    border-color: #444;
+    color: #f0f0f0;
+  }
+  
+  [data-grahmos="search-input"] {
+    background: #2a2a2a;
+    border-color: #444;
+    color: #f0f0f0;
+  }
+}

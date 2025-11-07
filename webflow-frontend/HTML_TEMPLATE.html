@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grahmos - AI Search Engine</title>
+  
+  <!-- Grahmos Configuration -->
+  <script>
+  window.GRAHMOS_CONFIG = {
+    apiBaseUrl: 'https://api.grahmos.com', // CHANGE THIS to your API URL
+    enableStreaming: true,
+    enableImages: true,
+    enableVideos: true,
+    enableFollowUpQuestions: true,
+    maxRetries: 3,
+    timeout: 30000,
+    debounceDelay: 300,
+    messages: {
+      networkError: 'Unable to connect. Please check your internet connection.',
+      searchError: 'Something went wrong. Please try again.',
+      emptyQuery: 'Please enter a search query.'
+    }
+  };
+  </script>
+  
+  <!-- Custom Styles -->
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: #FBFBFB;
+      color: #333;
+      padding: 2rem;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    
+    .logo {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #3498db;
+      margin-bottom: 0.5rem;
+    }
+    
+    .tagline {
+      color: #666;
+      font-size: 1rem;
+    }
+    
+    /* Search Container */
+    [data-grahmos="search-container"] {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    [data-grahmos="search-input"] {
+      flex: 1;
+      padding: 1rem 1.5rem;
+      font-size: 1rem;
+      border: 2px solid #e0e0e0;
+      border-radius: 24px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    
+    [data-grahmos="search-input"]:focus {
+      border-color: #3498db;
+    }
+    
+    [data-grahmos="search-submit"] {
+      padding: 1rem 2rem;
+      background: #3498db;
+      color: #fff;
+      border: none;
+      border-radius: 24px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    [data-grahmos="search-submit"]:hover {
+      background: #2980b9;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+    }
+    
+    /* Loading Indicator */
+    [data-grahmos="loading-indicator"] {
+      display: none;
+      text-align: center;
+      padding: 2rem;
+    }
+    
+    .loading-animation {
+      width: 40px;
+      height: 40px;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #3498db;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    /* Error Message */
+    [data-grahmos="error-message"] {
+      display: none;
+      padding: 1rem;
+      background-color: #fee;
+      border: 1px solid #fcc;
+      border-radius: 8px;
+      color: #c33;
+      margin: 1rem 0;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    /* Results Container */
+    [data-grahmos="results-container"] {
+      margin-top: 2rem;
+    }
+    
+    .section-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: #333;
+    }
+    
+    /* Sources Section */
+    [data-grahmos="sources-section"] {
+      margin-bottom: 2rem;
+    }
+    
+    .sources-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1rem;
+    }
+    
+    .source-card {
+      display: flex;
+      align-items: center;
+      padding: 1rem;
+      background: #fff;
+      border-radius: 8px;
+      text-decoration: none;
+      color: #333;
+      transition: all 0.2s;
+      border: 1px solid #e0e0e0;
+    }
+    
+    .source-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .source-favicon {
+      width: 20px;
+      height: 20px;
+      margin-right: 0.5rem;
+    }
+    
+    .source-title {
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
+    
+    /* LLM Response */
+    [data-grahmos="llm-response"] {
+      display: none;
+      padding: 1.5rem;
+      background: #fff;
+      border-radius: 8px;
+      border: 1px solid #e0e0e0;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+      font-size: 1rem;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+    
+    /* Images Section */
+    .images-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    
+    .result-image {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    
+    .result-image:hover {
+      transform: scale(1.05);
+    }
+    
+    /* Videos Section */
+    .videos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    
+    .video-card {
+      display: block;
+      text-decoration: none;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #fff;
+      transition: transform 0.2s;
+      border: 1px solid #e0e0e0;
+    }
+    
+    .video-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    }
+    
+    .video-thumbnail {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+    }
+    
+    .video-title {
+      padding: 0.75rem;
+      font-size: 0.9rem;
+      color: #333;
+    }
+    
+    /* Follow-up Questions */
+    .followup-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+    }
+    
+    .followup-button {
+      padding: 0.75rem 1.25rem;
+      background: #fff;
+      border: 2px solid #3498db;
+      border-radius: 24px;
+      color: #3498db;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .followup-button:hover {
+      background: #3498db;
+      color: #fff;
+    }
+    
+    @media (max-width: 768px) {
+      [data-grahmos="search-container"] {
+        flex-direction: column;
+      }
+      
+      .sources-grid,
+      .images-grid,
+      .videos-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <div class="logo">Grahmos</div>
+      <div class="tagline">Your AI-Powered Search Engine</div>
+    </div>
+    
+    <!-- Search Interface -->
+    <div data-grahmos="search-container">
+      <input 
+        data-grahmos="search-input" 
+        type="text" 
+        placeholder="Ask anything..."
+        aria-label="Search query">
+      <button data-grahmos="search-submit">Search</button>
+    </div>
+    
+    <!-- Loading Indicator -->
+    <div data-grahmos="loading-indicator">
+      <div class="loading-animation"></div>
+      <p style="margin-top: 1rem; color: #666;">Searching...</p>
+    </div>
+    
+    <!-- Error Message -->
+    <div data-grahmos="error-message"></div>
+    
+    <!-- Results Container -->
+    <div data-grahmos="results-container">
+      <!-- Sources will be injected here -->
+      <div data-grahmos="sources-section"></div>
+      
+      <!-- LLM Response will be injected here -->
+      <div data-grahmos="llm-response"></div>
+      
+      <!-- Images will be injected here -->
+      <div data-grahmos="images-section"></div>
+      
+      <!-- Videos will be injected here -->
+      <div data-grahmos="videos-section"></div>
+      
+      <!-- Follow-up questions will be injected here -->
+      <div data-grahmos="followup-questions"></div>
+    </div>
+  </div>
+  
+  <!-- Grahmos Search Engine Script -->
+  <script src="search-engine.js"></script>
+  
+  <!-- Or inline the script here for Webflow -->
+  <!-- <script>
+    // Paste contents of search-engine.js here
+  </script> -->
+</body>
+</html>
