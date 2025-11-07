@@ -2,7 +2,7 @@
 
 ## Project Context
 - **Site:** GRAHMOS Directory Platform
-- **Site ID:** 687f11a214d051312f70590e
+- **Site ID:** 690c15ada42ec08cfbdf7127
 - **API Base:** https://api.webflow.com/v2
 - **Token:** Use WEBFLOW_API_TOKEN env var
 
@@ -79,9 +79,9 @@
 ```json
 {
   "webflow": {
-    "api_token": "${WEBFLOW_API_TOKEN}",
+    "api_token": "4ad349b8f15c0f11be17a513aa46fe834c7697c2c7ccbe6bbf117e0dbf3c8d48",
     "base_url": "https://api.webflow.com/v2",
-    "site_id": "687f11a214d051312f70590e",
+    "site_id": "690c15ada42ec08cfbdf7127",
     "collections": {
       "stadiums": "68ac5238f3c7da9c3a054048",
       "routes": "68ac5528a1178733012eeccb",
