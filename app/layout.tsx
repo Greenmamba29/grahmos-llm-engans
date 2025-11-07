@@ -65,7 +65,7 @@ export default function RootLayout({
           >
             <div className="flex flex-col min-h-screen">
               <Header />
-              <main className="flex flex-col flex-1 bg-muted/50 dark:bg-background px-4">
+              <main className="flex flex-col flex-1 dark:bg-background">
                 {children}
               </main>
             </div>
