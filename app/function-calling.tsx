@@ -61,6 +61,7 @@ export async function goShopping(message: string) {
         const response = await fetch(url, requestOptions);
         if (!response.ok) {
             console.error(`Failed to fetch ${url}. Status: ${response.status}`);
+            return JSON.stringify({ error: 'Failed to fetch shopping data' });
         }
         const responseData = await response.json();
         const shoppingData = {
@@ -70,10 +71,21 @@ export async function goShopping(message: string) {
         return JSON.stringify(shoppingData);
     } catch (error) {
         console.error('Error fetching shopping data:', error);
+        return JSON.stringify({ error: 'Failed to fetch shopping data' });
     }
 }
 export async function getTickers(ticker: string) {
-    return JSON.stringify({ type: 'ticker', data: ticker });
+    // Normalize ticker format: ensure it's in EXCHANGE:SYMBOL format
+    const normalizedTicker = ticker.trim().toUpperCase();
+    
+    // Validate ticker format (should contain exchange prefix like NYSE:, NASDAQ:, etc.)
+    if (!normalizedTicker.includes(':')) {
+        // If no exchange prefix, try to infer or use default format
+        // For now, we'll return as-is but log a warning
+        console.warn(`Ticker "${ticker}" may be missing exchange prefix (e.g., NYSE:, NASDAQ:)`);
+    }
+    
+    return JSON.stringify({ type: 'ticker', data: normalizedTicker });
 }
 export async function searchSong(query: string): Promise<string> {
     const items = await api.search(query, ["track"]);
@@ -174,7 +186,7 @@ export async function functionCalling(query: string) {
         });
         const responseMessage = response.choices[0].message;
         const toolCalls = responseMessage.tool_calls;
-        if (toolCalls) {
+        if (toolCalls && toolCalls.length > 0) {
             const availableFunctions = {
                 getTickers: getTickers,
                 searchPlaces: searchPlaces,
@@ -185,6 +197,12 @@ export async function functionCalling(query: string) {
             for (const toolCall of toolCalls) {
                 const functionName = toolCall.function.name;
                 const functionToCall = availableFunctions[functionName];
+                
+                if (!functionToCall) {
+                    console.error(`Unknown function: ${functionName}`);
+                    return { error: `Unknown function: ${functionName}` };
+                }
+                
                 const functionArgs = JSON.parse(toolCall.function.arguments);
                 let functionResponse;
                 try {
@@ -197,15 +215,20 @@ export async function functionCalling(query: string) {
                     } else if (functionName === 'searchSong') {
                         functionResponse = await functionToCall(functionArgs.query);
                     }
-                    return JSON.parse(functionResponse);
+                    
+                    // Parse and return consistent object structure
+                    const parsedResponse = JSON.parse(functionResponse);
+                    return parsedResponse;
                 } catch (error) {
                     console.error(`Error calling function ${functionName}:`, error);
-                    return JSON.stringify({ error: `Failed to call function ${functionName}` });
+                    return { error: `Failed to call function ${functionName}` };
                 }
             }
         }
+        // Return undefined when no tool calls are made (consistent with expected behavior)
+        return undefined;
     } catch (error) {
         console.error('Error in functionCalling:', error);
-        return JSON.stringify({ error: 'An error occurred during function calling' });
+        return { error: 'An error occurred during function calling' };
     }
 }

@@ -19,6 +19,12 @@ function FinancialChart({ ticker }: { ticker: string }) {
   const container = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (!container.current || !ticker) return;
+
+    // Generate a unique ID for the container
+    const containerId = `tradingview-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    container.current.id = containerId;
+
     const script = document.createElement("script");
     script.src = "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
     script.type = "text/javascript";
@@ -36,20 +42,18 @@ function FinancialChart({ ticker }: { ticker: string }) {
         "allow_symbol_change": true,
         "calendar": false,
         "support_host": "https://www.tradingview.com",
-        "container_id": "${container.current?.id}"
+        "container_id": "${containerId}"
       }
     `;
 
-    if (container.current) {
-      container.current.appendChild(script);
-    }
+    container.current.appendChild(script);
 
     return () => {
       if (container.current) {
         container.current.innerHTML = "";
       }
     };
-  }, []);
+  }, [ticker]);
 
   return (
     <div className="my-5 tradingview-widget-container" ref={container} style={styles.container}>
