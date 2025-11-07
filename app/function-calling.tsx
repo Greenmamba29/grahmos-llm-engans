@@ -73,7 +73,10 @@ export async function goShopping(message: string) {
     }
 }
 export async function getTickers(ticker: string) {
-    return JSON.stringify({ type: 'ticker', data: ticker });
+    // Normalize ticker format: extract symbol from "EXCHANGE:SYMBOL" or use as-is
+    // TradingView supports both formats, but we'll normalize to "EXCHANGE:SYMBOL" for consistency
+    const normalizedTicker = ticker.includes(':') ? ticker : ticker.toUpperCase();
+    return JSON.stringify({ type: 'ticker', data: normalizedTicker });
 }
 export async function searchSong(query: string): Promise<string> {
     const items = await api.search(query, ["track"]);
@@ -200,12 +203,12 @@ export async function functionCalling(query: string) {
                     return JSON.parse(functionResponse);
                 } catch (error) {
                     console.error(`Error calling function ${functionName}:`, error);
-                    return JSON.stringify({ error: `Failed to call function ${functionName}` });
+                    return { error: `Failed to call function ${functionName}` };
                 }
             }
         }
     } catch (error) {
         console.error('Error in functionCalling:', error);
-        return JSON.stringify({ error: 'An error occurred during function calling' });
+        return { error: 'An error occurred during function calling' };
     }
 }

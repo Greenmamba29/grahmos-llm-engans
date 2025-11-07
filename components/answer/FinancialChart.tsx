@@ -1,5 +1,5 @@
 // FinancialChart.jsx
-import React, { useEffect, useRef, memo } from 'react';
+import React, { useEffect, useRef, memo, useMemo } from 'react';
 
 const styles = {
   container: {
@@ -17,8 +17,17 @@ const styles = {
 
 function FinancialChart({ ticker }: { ticker: string }) {
   const container = useRef<HTMLDivElement>(null);
+  const containerId = useMemo(() => 
+    `tradingview-${ticker.replace(/[^a-zA-Z0-9]/g, '-')}`, 
+    [ticker]
+  );
 
   useEffect(() => {
+    if (!container.current || !ticker) return;
+
+    // Clean up previous content
+    container.current.innerHTML = "";
+
     const script = document.createElement("script");
     script.src = "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
     script.type = "text/javascript";
@@ -36,20 +45,20 @@ function FinancialChart({ ticker }: { ticker: string }) {
         "allow_symbol_change": true,
         "calendar": false,
         "support_host": "https://www.tradingview.com",
-        "container_id": "${container.current?.id}"
+        "container_id": "${containerId}"
       }
     `;
 
-    if (container.current) {
-      container.current.appendChild(script);
-    }
+    // Set container ID
+    container.current.id = containerId;
+    container.current.appendChild(script);
 
     return () => {
       if (container.current) {
         container.current.innerHTML = "";
       }
     };
-  }, []);
+  }, [ticker, containerId]);
 
   return (
     <div className="my-5 tradingview-widget-container" ref={container} style={styles.container}>
