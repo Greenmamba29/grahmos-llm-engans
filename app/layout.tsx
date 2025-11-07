@@ -10,15 +10,15 @@ import { Header } from '@/components/header';
 import { Providers } from '@/components/providers';
 
 const meta = {
-  title: 'answers, how they should be displayed.',
+  title: 'GrahmOS Directory - AI-Powered Search',
   description:
-    'anwser engine built by developers digest',
+    'Search smarter, discover faster. AI-powered search engine with intelligent responses and real-time results.',
 };
 export const metadata: Metadata = {
   ...meta,
   title: {
-    default: 'answer website',
-    template: `%s - answer website`,
+    default: 'GrahmOS Directory - AI-Powered Search',
+    template: `%s - GrahmOS Directory`,
   },
   icons: {
     icon: '/favicon.ico',

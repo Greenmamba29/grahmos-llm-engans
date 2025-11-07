@@ -14,6 +14,7 @@ import SearchResultsComponent from '@/components/answer/SearchResultsComponent';
 import UserMessageComponent from '@/components/answer/UserMessageComponent';
 import FollowUpComponent from '@/components/answer/FollowUpComponent';
 import InitialQueries from '@/components/answer/InitialQueries';
+import Hero from '@/components/Hero';
 // Sidebar components
 import LLMResponseComponent from '@/components/answer/LLMResponseComponent';
 import ImagesComponent from '@/components/answer/ImagesComponent';
@@ -304,6 +305,12 @@ export default function Page() {
   };
   return (
     <div>
+      {messages.length === 0 && (
+        <Hero onSearch={(query) => {
+          setInputValue(query);
+          handleFollowUpClick(query);
+        }} />
+      )}
       {messages.length > 0 && (
         <div className="flex flex-col">
           {messages.map((message, index) => (
@@ -365,11 +372,12 @@ export default function Page() {
           ))}
         </div>
       )}
-      <div className={`px-2 fixed inset-x-0 bottom-0 w-full bg-gradient-to-b duration-300 ease-in-out animate-in dark:from-gray-900/10 dark:from-10% peer-[[data-state=open]]:group-[]:lg:pl-[250px] peer-[[data-state=open]]:group-[]:xl:pl-[300px]] mb-4 bring-to-front`}>
-        <div className="mx-auto max-w-xl sm:px-4 ">
-          {messages.length === 0 && !inputValue && (
-            <InitialQueries questions={['When did Daft Punk release Da Funk?', 'How is Apple\'s stock doing these days?', 'Where can I get the best bagel in NYC?', 'I want to buy a mens patagonia vest']} handleFollowUpClick={handleFollowUpClick} />
-          )}
+      {messages.length > 0 && (
+        <div className={`px-2 fixed inset-x-0 bottom-0 w-full bg-gradient-to-b duration-300 ease-in-out animate-in dark:from-gray-900/10 dark:from-10% peer-[[data-state=open]]:group-[]:lg:pl-[250px] peer-[[data-state=open]]:group-[]:xl:pl-[300px]] mb-4 bring-to-front`}>
+          <div className="mx-auto max-w-xl sm:px-4 ">
+            {messages.length === 0 && !inputValue && (
+              <InitialQueries questions={['When did Daft Punk release Da Funk?', 'How is Apple\'s stock doing these days?', 'Where can I get the best bagel in NYC?', 'I want to buy a mens patagonia vest']} handleFollowUpClick={handleFollowUpClick} />
+            )}
           {mentionQuery && (
             <div className="">
               <div className="flex items-center">
@@ -507,8 +515,9 @@ export default function Page() {
               </div>
             </div>
           </form>
+          </div>
         </div>
-      </div>
+      )}
       <div className="pb-[80px] pt-4 md:pt-10"></div>
     </div>
   );
