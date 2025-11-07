@@ -5,6 +5,7 @@ import { portKeyAIGateway } from './mentionFunctions/portKeyAIGateway';
 import { portKeyAIGatewayTogetherAI } from './mentionFunctions/portKeyAIGatewayTogetherAI';
 import { falAiStableDiffusion3Medium } from './mentionFunctions/falAiStableDiffusion3Medium';
 import { brightDataWebScraper } from './mentionFunctions/structuredUnlockSummarize';
+import { grahmosWebflow } from './mentionFunctions/grahmosWebflow';
 
 type MentionFunctions = {
     [key: string]: (mentionTool: string, userMessage: string, streamable: any) => Promise<void>;
@@ -16,6 +17,7 @@ export const mentionFunctions: MentionFunctions = {
     portKeyAIGatewayTogetherAI,
     falAiStableDiffusion3Medium,
     brightDataWebScraper,
+    grahmosWebflow,
 };
 
 export async function lookupTool(mentionTool: string, userMessage: string, streamable: any, file?: string): Promise<void> {
