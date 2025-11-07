@@ -1,0 +1,375 @@
+<!-- 
+  GrahmOS Directory - Hero Section
+  Copy this ENTIRE file and paste into Webflow Custom Code Embed
+  
+  Instructions:
+  1. Open Webflow Designer
+  2. Go to Home (Index) page
+  3. Add "Custom Code" element from Add panel
+  4. Paste ALL of this code
+  5. Publish!
+-->
+
+<style>
+@keyframes blob {
+  0%, 100% { transform: translate(0px, 0px) scale(1); }
+  33% { transform: translate(30px, -50px) scale(1.1); }
+  66% { transform: translate(-20px, 20px) scale(0.9); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.grahmos-hero {
+  position: relative;
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  overflow: hidden;
+  background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%);
+}
+
+.grahmos-hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.blob {
+  position: absolute;
+  width: 18rem;
+  height: 18rem;
+  border-radius: 9999px;
+  mix-blend-mode: multiply;
+  filter: blur(64px);
+  opacity: 0.7;
+  animation: blob 7s infinite;
+}
+
+.blob-1 {
+  top: 0;
+  left: -1rem;
+  background: rgba(37, 99, 235, 0.2);
+}
+
+.blob-2 {
+  top: 0;
+  right: -1rem;
+  background: rgba(30, 64, 175, 0.2);
+  animation-delay: 2s;
+}
+
+.blob-3 {
+  bottom: -2rem;
+  left: 5rem;
+  background: rgba(37, 99, 235, 0.2);
+  animation-delay: 4s;
+}
+
+.grahmos-hero-content {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 64rem;
+  margin: 0 auto;
+  text-align: center;
+  animation: fadeIn 0.6s ease-out;
+}
+
+.grahmos-hero-title {
+  font-size: 3rem;
+  font-weight: 700;
+  background: linear-gradient(to right, #2563EB, #1E40AF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.75rem;
+  animation: slideUp 0.6s ease-out;
+  line-height: 1.2;
+}
+
+.grahmos-hero-subtitle {
+  font-size: 1.5rem;
+  color: #6B7280;
+  margin-bottom: 2rem;
+  animation: slideUp 0.6s ease-out 0.2s both;
+}
+
+.grahmos-search-wrapper {
+  width: 100%;
+  max-width: 42rem;
+  margin: 0 auto 1.5rem;
+  animation: slideUp 0.6s ease-out 0.4s both;
+}
+
+.grahmos-search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  border: 1px solid #E5E7EB;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.grahmos-search-container:hover {
+  box-shadow: 0 25px 50px -12px rgba(37, 99, 235, 0.1);
+  border-color: #2563EB;
+}
+
+.grahmos-search-icon {
+  padding-left: 1.5rem;
+  padding-right: 0.75rem;
+  display: flex;
+  align-items: center;
+}
+
+.grahmos-search-input {
+  flex: 1;
+  padding: 1.25rem 1rem;
+  font-size: 1.125rem;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #111827;
+}
+
+.grahmos-search-input::placeholder {
+  color: #9CA3AF;
+}
+
+.grahmos-search-button {
+  margin: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(to right, #2563EB, #1E40AF);
+  color: white;
+  border: none;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+}
+
+.grahmos-search-button:hover {
+  background: linear-gradient(to right, #1D4ED8, #1E3A8A);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.4);
+}
+
+.grahmos-quick-searches {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 3rem;
+  animation: slideUp 0.6s ease-out 0.6s both;
+}
+
+.grahmos-quick-search {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid #E5E7EB;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #374151;
+}
+
+.grahmos-quick-search:hover {
+  background: white;
+  transform: scale(1.05);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border-color: #2563EB;
+}
+
+.grahmos-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  padding-top: 3rem;
+  animation: slideUp 0.6s ease-out 0.8s both;
+}
+
+.grahmos-feature {
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(12px);
+  border-radius: 1rem;
+  border: 1px solid #E5E7EB;
+  transition: all 0.3s;
+  text-align: center;
+}
+
+.grahmos-feature:hover {
+  border-color: #2563EB;
+  transform: scale(1.05);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.grahmos-feature-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  margin: 0 auto 1rem;
+  border-radius: 0.75rem;
+  background: linear-gradient(to bottom right, #2563EB, #1E40AF);
+  color: white;
+  font-size: 1.5rem;
+}
+
+.grahmos-feature-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #111827;
+}
+
+.grahmos-feature-description {
+  font-size: 0.875rem;
+  color: #6B7280;
+  line-height: 1.5;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .grahmos-hero-title {
+    font-size: 2.5rem;
+  }
+  .grahmos-hero-subtitle {
+    font-size: 1.25rem;
+  }
+  .grahmos-search-button {
+    padding: 0.625rem 1rem;
+    font-size: 0.875rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .grahmos-hero-title {
+    font-size: 4.5rem;
+  }
+  .grahmos-hero-subtitle {
+    font-size: 1.875rem;
+  }
+}
+</style>
+
+<div class="grahmos-hero">
+  <!-- Animated Background Blobs -->
+  <div class="grahmos-hero-bg">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="grahmos-hero-content">
+    <!-- Title -->
+    <h1 class="grahmos-hero-title">GrahmOS Directory</h1>
+    <p class="grahmos-hero-subtitle">Search smarter, discover faster</p>
+
+    <!-- Search Bar -->
+    <div class="grahmos-search-wrapper">
+      <div class="grahmos-search-container">
+        <div class="grahmos-search-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.35-4.35"/>
+          </svg>
+        </div>
+        <input 
+          type="text" 
+          class="grahmos-search-input" 
+          placeholder="Ask me anything..."
+          id="grahmos-search-input"
+        />
+        <button class="grahmos-search-button" id="grahmos-search-btn">
+          Search
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Quick Searches -->
+    <div class="grahmos-quick-searches">
+      <button class="grahmos-quick-search" data-query="Find stadiums near me">Find stadiums near me</button>
+      <button class="grahmos-quick-search" data-query="Browse routes">Browse routes</button>
+      <button class="grahmos-quick-search" data-query="Discover providers">Discover providers</button>
+      <button class="grahmos-quick-search" data-query="Search directory">Search directory</button>
+    </div>
+
+    <!-- Features -->
+    <div class="grahmos-features">
+      <div class="grahmos-feature">
+        <div class="grahmos-feature-icon">✨</div>
+        <h3 class="grahmos-feature-title">AI-Powered Answers</h3>
+        <p class="grahmos-feature-description">Get intelligent responses powered by advanced AI</p>
+      </div>
+      <div class="grahmos-feature">
+        <div class="grahmos-feature-icon">⚡</div>
+        <h3 class="grahmos-feature-title">Lightning Fast</h3>
+        <p class="grahmos-feature-description">Instant results from multiple sources</p>
+      </div>
+      <div class="grahmos-feature">
+        <div class="grahmos-feature-icon">🌍</div>
+        <h3 class="grahmos-feature-title">Global Directory</h3>
+        <p class="grahmos-feature-description">Search stadiums, routes, and providers worldwide</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Make search functional
+(function() {
+  const searchBtn = document.getElementById('grahmos-search-btn');
+  const searchInput = document.getElementById('grahmos-search-input');
+  
+  function performSearch() {
+    const query = searchInput.value.trim();
+    if (query) {
+      // Redirect to search page with query parameter
+      window.location.href = '/search?q=' + encodeURIComponent(query);
+    }
+  }
+  
+  searchBtn.addEventListener('click', performSearch);
+  
+  searchInput.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      performSearch();
+    }
+  });
+  
+  // Quick search buttons
+  document.querySelectorAll('.grahmos-quick-search').forEach(button => {
+    button.addEventListener('click', function() {
+      const query = this.getAttribute('data-query');
+      window.location.href = '/search?q=' + encodeURIComponent(query);
+    });
+  });
+})();
+</script>
